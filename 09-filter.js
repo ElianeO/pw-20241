@@ -25,4 +25,4 @@ console.log('Frutas terminando com a letra "i": ', terminaComI )
 
 // Frutas que terminam com a letra ""r
 const terminaComR = frutas.filter(f => f.slice(-1) === 'r')
-console.log('Frutas terminando com a letra "r": ', terminaComR )
+console.log('Frutas terminando com a letra "r": ', terminaComR ) 

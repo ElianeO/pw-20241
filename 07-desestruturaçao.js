@@ -52,7 +52,7 @@ console.log('-'.repeat(60))
 // 3) Pode ser feita a desestruturação parcial
 
 let {sexo, nome, email} = pessoa
-console.log({nome, sexo, ema})
+console.log({nome, sexo, email})
 
 
 
