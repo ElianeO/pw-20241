@@ -49,7 +49,7 @@ console.log('-'.repeat(60))
 
 // 1) Devem ter o MESMO NOME das propriedades do objetos
 // 2) Podem ser especificificadas em qualquer ordem
-// 3) Pode ser feita a desestruturação parcial
+// 3) Pode ser feita a desestruturação parcial.
 
 let {sexo, nome, email} = pessoa
 console.log({nome, sexo, email})

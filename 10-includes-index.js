@@ -2,7 +2,7 @@ const carros = ['Chevette', 'Fusca', 'Opala', 'Maverick', 'Belina', 'Del Rey']
 
 /*
     O método includes() testa se um dado elementos existe em um vetor.
-    Retorna true se existir, ou false caso contrário 
+    Retorna true se existir, ou false caso contrário. 
 */
 
 console.log('Tem Fusca?', carros.includes('Fusca'))

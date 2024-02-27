@@ -1,5 +1,5 @@
 //  O método find() encontra, em um vetor, o PRIMEIRO ELEMENTO que corresponda ao retorno 
-//  de uma função passada como parâmetro
+// de uma função passada como parâmetro
 
 // Vetores para busca
 const numeros = [10, 19, 3, -4, 13, -11, 15, 0, -1]
