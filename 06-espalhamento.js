@@ -70,3 +70,5 @@ function soma(...nums) {
     for(let n of nums ) resultado += n
     return resultado
 }
+
+/*******/

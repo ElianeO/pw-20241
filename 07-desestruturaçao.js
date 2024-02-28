@@ -47,13 +47,14 @@ console.log('-'.repeat(60))
 
 // Na desestruturação de objetos, as variáveis avulsas:
 
-// 1) Devem ter o MESMO NOME das propriedades do objetos
-// 2) Podem ser especificificadas em qualquer ordem
+// 1) Devem ter o MESMO NOME das propriedades do objetos.
+// 2) Podem ser especificificadas em qualquer ordem.
 // 3) Pode ser feita a desestruturação parcial.
 
 let {sexo, nome, email} = pessoa
 console.log({nome, sexo, email})
 
+/***********/
 
 
 

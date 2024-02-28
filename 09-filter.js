@@ -1,6 +1,6 @@
 /* 
-    O método filter() cria um NOVO VETOR contendo apenas os elementos do vetor de prigem 
-    que atendam ao critério especificado pela função passada comp parâmetro
+    O método filter() cria um NOVO VETOR contendo apenas os elementos do vetor de origem 
+    que atendam ao critério especificado pela função passada comp parâmetro.
 */
 
 // Vetores para busca
