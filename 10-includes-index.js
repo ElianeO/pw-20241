@@ -17,3 +17,5 @@ console.log('Tem Belina?', carros.includes('Belina'))
 console.log('Posição de Fusca:', carros.indexOf('Fusca'))
 console.log('Posição de Corcel:', carros.indexOf('Corcel'))
 console.log('Posição de Chevette:', carros.indexOf('Chevette'))
+
+/****************/

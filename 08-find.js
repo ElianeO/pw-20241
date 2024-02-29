@@ -21,3 +21,5 @@ console.log('Primeiro fruta começando com a letra "m": ',
 // Encontrando a primeira fruta que termina com a letra "r"
 console.log('Primeiro fruta terminando com a letra "r": ', 
     frutas.find(f => f.slice(-1) === 'r'))
+
+    /*********/

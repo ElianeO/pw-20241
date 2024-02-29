@@ -54,6 +54,8 @@ console.log('-'.repeat(60))
 let {sexo, nome, email} = pessoa
 console.log({nome, sexo, email})
 
+/***************/
+
 
 
 
