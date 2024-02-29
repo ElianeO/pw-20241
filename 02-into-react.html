@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+
+    <div id="root"></div>
+
+    <script>
+        /*
+            No react os atributos de um elemento html são chamados PROPS, sendo definidos por meio de um objeto JavaScript
+        */
+       const props = {
+        id: 'div-react',
+        children: 'DIV criada com Reacr',
+        style: {border: '2px solid blue', background: 'pink'}
+       }
+
+       // Usando o React para criar um elemento com as props definidas anteriormente
+       const novaDiv = React.createElement('div', props)
+
+       // Criando um botão definindo as props na própria chamada da função
+       const botao = React.createElement('button', {
+        id: 'botao1',
+        style: {color: 'red', background: 'yellow'},
+        children: 'Clique aqui!',
+        onclick: () => alert('Olá!')
+       })
+
+       // "Encaixando o novo elemento na estrutura da página"
+       const root = ReactDOM.createRoot(document.getElementById('roor'))
+       root.render(novaDiv)
+       root.render(botao)
+    </script>
+</body>
+
+</html>
