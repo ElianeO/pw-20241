@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        .sauda {
+            background: indigo;
+            border-radius: 8px;
+            color: white;
+            box-shadow: 2px 2px 6px rgba(0, 0, 0, 25);
+            padding: 12px;
+            text-align: center;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js" crossorigin></script>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+
+        /* 
+            FUNÇÃO DE COMPONENTE
+            Uma função de componente em React possui três características:
+            1 -> Seu nome começa com letra MAIÚSCULA
+            2 -> Podem receber props entre{}
+            3 -> Retornam um único elemento, que pode ser um container para outros elementos
+        */
+        // function Saudacao({ nome, msg }) {
+        //     return <div className="sauda"> {msg}, {nome}! </div>
+        // }
+
+        // Função de componente em formato arrow function
+        const Saudacao = ({nome, msg}) => <div className="sauda"> {msg}, {nome}! </div>
+
+        // Criação de um componente usando chamada explícita a função
+        const saudacao1 = Saudacao({ msg: 'Bom dia', nome: 'Dona Clementina' })
+
+        // Criação de um componente usando JSX
+        const saudacao2 = <Saudacao nome="Seu Bita" msg="O sol ja nasceu lá na faznedinha" />
+
+        const container =
+            <> {/* Isto é um fragment, recurso do React para agrupar outros elementos */}
+                {saudacao1}
+                {saudacao2}
+                {  /*Criação de um componente diretamente no container */ }
+                <Saudacao msg="Boa tarde" nome="Senhor Valdemar" />
+            </>
+
+
+        const root = ReactDOM.createRoot(document.getElementById('root'))
+        root.render(container)
+
+    </script>
+</body>
+
+</html>

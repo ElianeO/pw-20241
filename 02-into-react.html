@@ -2,43 +2,60 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 </head>
 
 <body>
-    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
 
-    <div id="root"></div>
+  <div id="root"></div>
 
-    <script>
-        /*
-            No react os atributos de um elemento html são chamados PROPS, sendo definidos por meio de um objeto JavaScript
-        */
-       const props = {
-        id: 'div-react',
-        children: 'DIV criada com Reacr',
-        style: {border: '2px solid blue', background: 'pink'}
-       }
+  <script>
+    /*
+      No React, os atributos de um elemento HTML são chamados PROPS, sendo
+      definidos por meio de um objeto JavaScript
+    */
+    const props = {
+      id: 'div-react',
+      children: 'DIV criada com React',
+      style: { border: '2px solid blue', background: 'pink' }
+    }
 
-       // Usando o React para criar um elemento com as props definidas anteriormente
-       const novaDiv = React.createElement('div', props)
+    // Usando o React para criar um elemento com as props definidas anteriormente
+    const novaDiv = React.createElement('div', props)
 
-       // Criando um botão definindo as props na própria chamada da função
-       const botao = React.createElement('button', {
-        id: 'botao1',
-        style: {color: 'red', background: 'yellow'},
-        children: 'Clique aqui!',
-        onclick: () => alert('Olá!')
-       })
+    // Criando um botão definindo as props na própria chamada da função
+    const botao = React.createElement('button', {
+      id: 'botao1',
+      style: { color: 'red', background: 'yellow' },
+      children: 'Clique aqui!',
+      onClick: () => alert('Olá!')
+    })
+    const parag = React.createElement('p', null, 'Parágrafo Simples')
 
-       // "Encaixando o novo elemento na estrutura da página"
-       const root = ReactDOM.createRoot(document.getElementById('roor'))
-       root.render(novaDiv)
-       root.render(botao)
-    </script>
+    /* 
+        Criando um elemento container para englobar os elemntos que devem ser exibidos.
+        Nesse casom usamos a função React.createElement() com três parâmetros, onde o
+        terceiro parâmetro indica o conteúdo ("children") do elemento.
+    */
+
+    const container = React.createElement('div', { id: 'container' }, [
+      novaDiv,
+      botao,
+      parag
+    ])
+
+    // "Encaixando" o novo elemento na estrutura da página
+    const root = ReactDOM.createRoot(document.getElementById('root'))
+    // root.render(novaDiv)
+    // root.render(botao)
+    root.render(container)
+
+  </script>
+
 </body>
 
 </html>
