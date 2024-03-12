@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,23 +11,33 @@
       1) Crie dois estilos CSS, um que coloque o texto em uma cor
           e outro que coloque o texto em outra cor.
     */
-    .estilo1{
+    .pessoa {
+      color: blueviolet;
+      padding: 5px;
+    }
+
+    .idade {
       text-align: center;
+      background-color: aqua;
+      color: purple;
+    }
+
+    .estilo1 {
       color: rosybrown;
     }
 
-    .estilo2{
-      text-align: center;
+    .estilo2 {
       color: royalblue;
     }
   </style>
 </head>
+
 <body>
 
   <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  
+
   <div id="root"></div>
 
   <script type="text/babel">
@@ -34,24 +45,55 @@
       EXERCÍCIO DE FIXAÇÃO nº 1
 
       2) Declare uma função de componente que receba as seguintes
-         props personalizadas: nome, sobrenome, dia, mes e ano.
-      3) Na função de componente, coloque um fragment e, dentro dele,
-        dois parágrafos: no primeiro, deve ser aplicada a classe que
-        deixa a cor do texto em uma cor e, no outro, a classe que deixa
-        a cor na outra cor.
-      4) No primeiro parágrafo, deve ser exibido o nome completo, composto
-         por nome e sobrenome.
-      5) No segundo parágrafo, deve ser exibida a data de nascimento, 
-         composta pelo dia, pelo mês e pelo ano, separados por /.
-      6) No componente, crie, ainda, uma div. Dentro dela, deve ser exibida
-         a idade que a pessoa terá ao final do ano, calculada por meio de
-         um cálculo simples (2024 menos o ano de nascimento informado).
-      7) Faça os comentários que julgar necessários no código.
+         props personalizadas: nome, sobrenome, dia, mes e ano. */
 
-      Esta atividade contará para a nota de Participação e Assiduidade (PA).
-    */
-    
+
+    /* 3) Na função de componente, coloque um fragment e, dentro dele,
+       dois parágrafos: no primeiro, deve ser aplicada a classe que
+       deixa a cor do texto em uma cor e, no outro, a classe que deixa
+       a cor na outra cor. */
+
+
+    /* 4) No primeiro parágrafo, deve ser exibido o nome completo, composto
+       por nome e sobrenome. */
+
+    /* 5) No segundo parágrafo, deve ser exibida a data de nascimento,
+        composta pelo dia, pelo mês e pelo ano, separados por /. */
+
+    /* 6) No componente, crie, ainda, uma div. Dentro dela, deve ser exibida
+       a idade que a pessoa terá ao final do ano, calculada por meio de
+       um cálculo simples (2024 menos o ano de nascimento informado). */
+
+    /* 7) Faça os comentários que julgar necessários no código.
+
+    Esta atividade contará para a nota de Participação e Assiduidade (PA).
+  */
+     // Função de componente que recebe as informação da pessoa
+    const Pessoa = ({ nome, sobrenome, anoNasc, diaNasc, mesNasc }) => <div className="pessoa" nome={nome} sobrenome={sobrenome}
+    anoNasc={anoNasc} diaNasc={diaNasc} mesNasc={mesNasc} />
+
+    // Parágrafo que exibe o nome e o sobrenome na primeira cor
+    const Parag1 = ({ nome, sobrenome }) => <p className="estilo1" > {nome} {sobrenome} </p>
+
+    // Parágrafo que exibe o nome e o sobrenome na segunda cor
+    const Parag2 = ({ dia, mes, ano }) => <p className="estilo2" > {dia} / {mes} / {ano} </p>
+
+    // Componente que recebe o ano atual e o ano de nascimento da pessoa e faz a subtração para obter a idade dela.
+    const Idade = ({ anoAtual, ano, ...props }) =>
+      <div className="idade" titlle="Idade da pessoa informada" {...props}>
+        A idade é {anoAtual - ano}
+      </div>
+
+    const container = <>
+      <Parag1 nome="Maria" sobrenome="Joaquina"> </Parag1>
+      <Parag2 dia="10" mes="10" ano="1999"> </Parag2>
+      <Idade id="idade" titlle="Idade da pessoa informada" anoAtual={2024} ano={1999} />
+    </>
+
+    const root = ReactDOM.createRoot(document.getElementById('root'))
+    root.render(container)
   </script>
-  
+
 </body>
+
 </html>
