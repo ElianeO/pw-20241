@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+
+        function Form() {
+            const [valorReais, setvalorReais] = React.useState('')
+            const [cotacaoDolar, setCotacaoDolar] = React.useState('')
+
+            console.count('atualizou')
+
+            return (
+                <>
+                    <h1>Conversor de Moeda</h1>
+                    <form>
+                        <div>
+                            <label>
+                                <span>Valor em reais</span>
+                                <input type="number"
+                                    onChange={event => setvalorReais(event.target.value)} />
+                            </label>
+                        </div>
+                        <div>
+                            <label>
+                                <span>Cotacao do Dólar</span>
+                                <input type="number"
+                                    onChange={event => setCotacaoDolar(event.target.value)} />
+                            </label>
+                        </div>
+                        <div>Valor convertido = {Number(valorReais) / Number(cotacaoDolar)}</div>
+                    </form>
+                </>
+            )
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'))
+        root.render(<Form />)
+
+    </script>
+</body>
+
+</html>
