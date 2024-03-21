@@ -17,27 +17,27 @@
     <script type="text/babel">
 
         function Form() {
-            const [valorReais, setvalorReais] = React.useState('')
+            const [valorReais, setValorReais] = React.useState('')
             const [cotacaoDolar, setCotacaoDolar] = React.useState('')
 
             console.count('atualizou')
 
             return (
                 <>
-                    <h1>Conversor de Moeda</h1>
+                    <h1>Conversor de Moeda --> Reais/Dólar</h1>
                     <form>
                         <div>
                             <label>
                                 <span>Valor em reais</span>
                                 <input type="number"
-                                    onChange={event => setvalorReais(event.target.value)} />
+                                    onChange={event => setValorReais(Number(event.target.value))} />
                             </label>
                         </div>
                         <div>
                             <label>
                                 <span>Cotacao do Dólar</span>
                                 <input type="number"
-                                    onChange={event => setCotacaoDolar(event.target.value)} />
+                                    onChange={event => setCotacaoDolar(Number(event.target.value))} />
                             </label>
                         </div>
                         <div>Valor convertido = {Number(valorReais) / Number(cotacaoDolar)}</div>
