@@ -1,8 +1,10 @@
+
 import * as React from 'react';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import { Link } from 'react-router-dom';
 
 export default function MainMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -16,37 +18,43 @@ export default function MainMenu() {
 
   return (
     <div>
-      <IconButton
-        size="large"
-        edge="start"
-        color="inherit"
-        aria-label="menu"
+      <IconButton 
+        edge="start" 
+        color="inherit" 
+        aria-label="menu" 
+        sx={{ mr: 2 }}
+        id="basic-button"
         aria-controls={open ? 'basic-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
-        sx={{ mr: 2 }}
       >
         <MenuIcon />
       </IconButton>
       <Menu
-        id="demo-positioned-menu"
-        aria-labelledby="demo-positioned-button"
+        id="basic-menu"
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
+        MenuListProps={{
+          'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        <MenuItem onClick={handleClose} component={Link} to="/" divider>
+          Página inicial
+        </MenuItem>
+        <MenuItem onClick={handleClose} component={Link} to="/cars">
+          Listagem dos veículos
+        </MenuItem>
+        <MenuItem onClick={handleClose} component={Link} to="/cars/new" divider>
+          Cadastro de veículos
+        </MenuItem>
+        <MenuItem onClick={handleClose} component={Link} to="/customers">
+          Listagem de clientes
+        </MenuItem>
+        <MenuItem onClick={handleClose} component={Link} to="/customers/new" divider>
+          Cadastro de clientes
+        </MenuItem>
       </Menu>
     </div>
   );
