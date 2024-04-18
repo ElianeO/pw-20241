@@ -7,7 +7,7 @@ import * as React from 'react'
 import { fetchPokemon, PokemonInfoFallback, PokemonDataView, PokemonForm } from '../pokemon'
 
 function PokemonInfo({ pokemonName }) {
-  // 🐨 crie o estado para o pokémon (null)
+  // 🐨 crie o estado para o pokémon (nzull)
   // const [pokemon, setPokemon] = React.useState(null)
   // const [error, setError] = React.useState(null)
   // const [status, setStatus] = React.useState('idle')

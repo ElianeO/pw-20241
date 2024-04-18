@@ -1,18 +1,30 @@
 import React from 'react'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
-import CoffeeIcon from '@mui/icons-material/Coffee';
+import CoffeeIcon from '@mui/icons-material/Coffee'
 
 export default function FooterBar() {
   return (
     <Toolbar
       variant="dense"
       component="footer"
+      sx={{
+        position: 'fixed',
+        bottom: 0,
+        width: '100vw',
+        justifyContent: 'center',
+        backgroundColor: 'action.disabledBackground'
+      }}
     >
-      <Typography 
+      <Typography
         variant="caption"
+        sx={{
+          '& a': {
+            color: 'secondary.light'
+          }
+        }}
       >
-        Desenvolvido com café por <a href="eliane.oliveira11@fatec.sp.gov.br">Eliane Cristina da Silva Oliveira</a>, 2024
+        Desenvolvido com <CoffeeIcon fontSize="small" /> por <a href="mailto:professor@faustocintra.com.br">Prof. Fausto Cintra</a>
       </Typography>
     </Toolbar>
   )
