@@ -1,13 +1,14 @@
 import { createTheme } from '@mui/material/styles'
 import { yellow, pink } from '@mui/material/colors'
+import { ptBR } from '@mui/x-data-grid/locales'
 
 const theme = createTheme({
   palette: {
-    mode: 'dark',       // Vamos usar o modo escuro
-    primary: {          // Cor primária
+    mode: 'dark',
+    primary: {
       main: yellow[500]
     },
-    secondary: {        // Cor secundária
+    secondary: {
       main: pink[500]
     }
   },
@@ -17,6 +18,6 @@ const theme = createTheme({
       fontWeight: 'bold'
     }
   }
-})
+}, ptBR)
 
 export default theme
