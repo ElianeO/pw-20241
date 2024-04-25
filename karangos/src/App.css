@@ -1,14 +1,17 @@
-body {
-  margin: 0;
-  padding: 0;
-}
+body {	body {
+  margin: 0;	  margin: 0;
+  padding: 0;	  padding: 0;
+}	}
 
-/* Oculta os botões de alterar e excluir os datagrids por padrão */
-.MuiDataGrid-id-row button {
+/* Oculta os botões de editar e excluir dos datagrids, por padrão */
+.MuiDataGrid-row button {
   visibility: hidden;
 }
 
-/* Recolhe os botões de editar e excluir de um datagrid quando o cursor do mouse estiver sobre uma linha de grid */
-.MuiDataGrid-id-row houver button{
+/* 
+  Reexibe os botões de editar e excluir de um datagrid quando o cursor
+  do mouse estiver sobre uma linha da grid
+*/
+.MuiDataGrid-row:hover button {
   visibility: visible;
 }
