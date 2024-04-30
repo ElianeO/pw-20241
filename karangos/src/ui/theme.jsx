@@ -1,23 +1,24 @@
 import { createTheme } from '@mui/material/styles'
 import { yellow, pink } from '@mui/material/colors'
-import { ptBR } from '@mui/x-data-grid/locales'
+import { ptBR as ptrBR_datagrid} from '@mui/x-data-grid/locales'
+import { ptBR as ptBR_datePicker} from '@mui/x-date-pickers/locales'
 
 const theme = createTheme({
   palette: {
-    mode: 'dark',
-    primary: {
+    mode: 'dark',       // Vamos usar o modo escuro
+    primary: {          // Cor primária
       main: yellow[500]
     },
-    secondary: {
+    secondary: {        // Cor secundária
       main: pink[500]
     }
   },
   typography: {
     h1: {
-      fontSize: '2rem',
+      fontSize: '30pt',
       fontWeight: 'bold'
     }
   }
-}, ptBR)
+}, ptrBR_datagrid, ptBR_datePicker)
 
 export default theme

@@ -10,25 +10,27 @@ import { ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import FooterBar from './ui/FooterBar'
 import AppRoutes from './routes/AppRoutes'
-import { Box } from '@mui/material'
+import Box from '@mui/material/Box'
 import { BrowserRouter } from 'react-router-dom'
 
 function App() {
   return (
     <>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <BrowserRouter>
-
-      <TopBar />
-
-      <Box sx={{ m: '24px 24px 72px 24px'}}>
-        <AppRoutes />
-      </Box>
-      
-      <FooterBar />
-      </BrowserRouter>
-    </ThemeProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <BrowserRouter>
+          
+          <TopBar />
+          
+          <Box sx={{ 
+              m: '24px 24px 72px 24px'
+            }}>
+            <AppRoutes />
+          </Box>
+          
+          <FooterBar />
+        </BrowserRouter>
+      </ThemeProvider>
     </>
   )
 }

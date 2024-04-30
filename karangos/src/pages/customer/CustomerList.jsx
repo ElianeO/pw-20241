@@ -1,25 +1,22 @@
 import React from 'react'
-import Typography from '@mui/material/Typography'
-import Box from '@mui/material/Box';
+import { Typography, Box, IconButton, Paper, Button } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid';
 import myfetch from '../../lib/myfetch'
-import IconButton from '@mui/material/IconButton'
-import { Link } from 'react-router-dom'
-import EditIcon from '@mui/icons-material/Edit'
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
-import Button from '@mui/material/Button'
-import Paper from '@mui/material/Paper'
-import AddBoxIcon from '@mui/icons-material/AddBox';
 import Waiting from '../../ui/Waiting'
+import { Link } from 'react-router-dom';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+
 
 export default function CustomerList() {
 
   const columns = [
-    { 
-      field: 'id', 
-      headerName: 'Cód.', 
-      width: 70,
-      type: "number"
+    {
+      field: 'id',
+      headerName: 'Cód.',
+      type: 'number',
+      width: 80
     },
     {
       field: 'name',
@@ -32,20 +29,21 @@ export default function CustomerList() {
       width: 150
     },
     {
-      field: 'city',
+      field: 'municipality',
       headerName: 'Município/UF',
       width: 200,
-      valueGetter: (value, row) => value + '/' + row.uf
+      // Colocando dois campos na mesma célula
+      valueGetter: (value, row) => row.municipality + '/' + row.state
     },
     {
       field: 'phone',
-      headerName: 'Tel./Celular',
+      headerName: 'Tel./celular',
       width: 160
     },
     {
       field: 'email',
       headerName: 'E-mail',
-      width: 200
+      width: 250
     },
     {
       field: '_edit',
@@ -55,8 +53,9 @@ export default function CustomerList() {
       width: 90,
       sortable: false,
       renderCell: params => (
-        <Link to={'./' + params.id}>
+        <Link to={`./${params.id}`}>
           <IconButton aria-label="Editar">
+
             <EditIcon />
           </IconButton>
         </Link>
@@ -75,46 +74,30 @@ export default function CustomerList() {
         </IconButton>
       )
     },
-  ]
+  ];
 
   const [state, setState] = React.useState({
     customers: [],
     showWaiting: false
   })
+
   const {
     customers,
     showWaiting
   } = state
 
   /*
-    useEffect() com vetor de dependências vazio, para ser executado
-    uma única vez durante o carregamento inicial do componente e
-    disparar uma requisição ao back-end solicitando os dados a serem
-    exibidos
+    useEffect() com vetor de dependências vazio irá ser executado
+    apenas uma vez, durante o carregamento inicial do componente
   */
   React.useEffect(() => {
     fetchData()
   }, [])
 
-  async function fetchData() {
-    // Exibe a tela de espera
-    setState({ ...state, showWaiting: true })
-    try {
-      const result = await myfetch.get('/customers?by=name')
-      
-      // Coloca o resultado no vetor customers e desliga a tela de espera
-      setState({ ...state, customers: result, showWaiting: false })
-    }
-    catch(error) {
-      console.log(error)
-
-      // Desliga a tela de espera
-      setState({ ...state, showWaiting: false })
-    }
-  }
-
   async function handleDeleteButtonClick(deleteId) {
-    if(confirm('Deseja realmente excluir este item?')) {
+    if (confirm('Deseja realmente excluir este item?')) {
+      // Exibe a tela de espera
+      setState({...state, showWaiting: true})
       try {
         // Efetua uma chamada ao back-end para tentar excluir o item
         await myfetch.delete(`/customers/${deleteId}`)
@@ -123,14 +106,42 @@ export default function CustomerList() {
         fetchData()
 
         alert('Item excluído com sucesso.')
+
+        // Esconde a tela de espera
+        setState({...state, showWaiting: false})
       }
-      catch(error) {
+      catch (error) {
         alert(error.message)
+
+        
+        // Esconde a tela de espera
+        setState({...state, showWaiting: false})
       }
     }
   }
 
-  return(
+
+  async function fetchData() {
+    setState({ ...state, showWaiting: true })
+    try {
+      const result = await myfetch.get('/customers')
+      console.log(result)
+      setState({
+        ...state,
+        customers: result,
+        showWaiting: false
+      })
+    }
+    catch (error) {
+      console.error(error)
+      setState({
+        ...state,
+        showWaiting: false
+      })
+    }
+  }
+
+  return (
     <>
       <Waiting show={showWaiting} />
 
@@ -138,41 +149,40 @@ export default function CustomerList() {
         Listagem de clientes
       </Typography>
 
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'right',
-          mb: 2     // Margem inferior
-        }}
-      >
+      <Box sx={{
+        display: 'flex',
+        justifyContent: 'right',
+        mb: 2 //marginBottom
+      }}>
         <Link to="./new">
           <Button
             variant="contained"
-            color="secondary"
             size="large"
+            color="secondary"
             startIcon={<AddBoxIcon />}
           >
-            Novo cliente
+            Novo CLiente
           </Button>
         </Link>
+
       </Box>
 
       <Paper elevation={10}>
-        <Box sx={{ height: 400, width: '100%' }}>
-          <DataGrid
-            rows={customers}
-            columns={columns}
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 5,
-                },
+      <Box sx={{ height: 400, width: '100%' }}>
+        <DataGrid
+          rows={customers}
+          columns={columns}
+          initialState={{
+            pagination: {
+              paginationModel: {
+                pageSize: 5,
               },
-            }}
-            pageSizeOptions={[5]}
-          />
-        </Box>
-      </Paper>     
+            },
+          }}
+          pageSizeOptions={[5]}
+        />
+      </Box>
+      </Paper>
     </>
   )
 }
