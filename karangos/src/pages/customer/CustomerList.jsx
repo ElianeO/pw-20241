@@ -1,22 +1,28 @@
 import React from 'react'
-import { Typography, Box, IconButton, Paper, Button } from '@mui/material'
-import { DataGrid } from '@mui/x-data-grid';
+import Typography from '@mui/material/Typography'
+import Box from '@mui/material/Box'
+import { DataGrid } from '@mui/x-data-grid'
 import myfetch from '../../lib/myfetch'
-import Waiting from '../../ui/Waiting'
-import { Link } from 'react-router-dom';
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-
+import IconButton from '@mui/material/IconButton'
+import { Link } from 'react-router-dom'
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
+import Button from '@mui/material/Button'
+import Paper from '@mui/material/Paper'
+import AddBoxIcon from '@mui/icons-material/AddBox'
+//import Waiting from '../../ui/Waiting'
+import useConfirmDialog from '../../ui/useConfirmDialog'
+import useNotification from '../../ui/useNotification'
+import useWaiting from '../../ui/useWaiting'
 
 export default function CustomerList() {
 
   const columns = [
-    {
-      field: 'id',
-      headerName: 'Cód.',
-      type: 'number',
-      width: 80
+    { 
+      field: 'id', 
+      headerName: 'Cód.', 
+      width: 70,
+      type: "number"
     },
     {
       field: 'name',
@@ -29,21 +35,20 @@ export default function CustomerList() {
       width: 150
     },
     {
-      field: 'municipality',
+      field: 'city',
       headerName: 'Município/UF',
       width: 200,
-      // Colocando dois campos na mesma célula
-      valueGetter: (value, row) => row.municipality + '/' + row.state
+      valueGetter: (value, row) => value + '/' + row.uf
     },
     {
       field: 'phone',
-      headerName: 'Tel./celular',
+      headerName: 'Tel./Celular',
       width: 160
     },
     {
       field: 'email',
       headerName: 'E-mail',
-      width: 250
+      width: 200
     },
     {
       field: '_edit',
@@ -53,9 +58,8 @@ export default function CustomerList() {
       width: 90,
       sortable: false,
       renderCell: params => (
-        <Link to={`./${params.id}`}>
+        <Link to={'./' + params.id}>
           <IconButton aria-label="Editar">
-
             <EditIcon />
           </IconButton>
         </Link>
@@ -74,30 +78,51 @@ export default function CustomerList() {
         </IconButton>
       )
     },
-  ];
+  ]
 
   const [state, setState] = React.useState({
-    customers: [],
-    showWaiting: false
+    customers: []
   })
-
   const {
-    customers,
-    showWaiting
+    customers
   } = state
 
+  const { askForConfirmation, ConfirmDialog } = useConfirmDialog()
+  const { notify, Notification } = useNotification()
+  const { showWaiting, Waiting } = useWaiting()
+
   /*
-    useEffect() com vetor de dependências vazio irá ser executado
-    apenas uma vez, durante o carregamento inicial do componente
+    useEffect() com vetor de dependências vazio, para ser executado
+    uma única vez durante o carregamento inicial do componente e
+    disparar uma requisição ao back-end solicitando os dados a serem
+    exibidos
   */
   React.useEffect(() => {
     fetchData()
   }, [])
 
+  async function fetchData() {
+    // Exibe a tela de espera
+    showWaiting()
+    try {
+      const result = await myfetch.get('/customers?by=name')
+      
+      // Coloca o resultado no vetor customers
+      setState({ ...state, customers: result })
+    }
+    catch(error) {
+      console.error(error)
+      notify('ERRO: ' + error.message, 'error')
+    }
+    finally {
+      // Oculta a tela de espera
+      showWaiting(false)
+    }
+  }
+
   async function handleDeleteButtonClick(deleteId) {
-    if (confirm('Deseja realmente excluir este item?')) {
-      // Exibe a tela de espera
-      setState({...state, showWaiting: true})
+    if(await askForConfirmation('Deseja realmente excluir este item?', 'Confirmar operação')) {
+      showWaiting()   // Exibe a tela de espera
       try {
         // Efetua uma chamada ao back-end para tentar excluir o item
         await myfetch.delete(`/customers/${deleteId}`)
@@ -105,84 +130,65 @@ export default function CustomerList() {
         // Recarrega os dados da grid
         fetchData()
 
-        alert('Item excluído com sucesso.')
-
-        // Esconde a tela de espera
-        setState({...state, showWaiting: false})
+        notify('Item excluído com sucesso.')
       }
-      catch (error) {
-        alert(error.message)
-
-        
-        // Esconde a tela de espera
-        setState({...state, showWaiting: false})
+      catch(error) {
+        console.error(error)
+        notify('ERRO: ' + error.message, 'error')
+      }
+      finally {
+        showWaiting(false)  // Ocultar a tela de espera
       }
     }
   }
 
-
-  async function fetchData() {
-    setState({ ...state, showWaiting: true })
-    try {
-      const result = await myfetch.get('/customers')
-      console.log(result)
-      setState({
-        ...state,
-        customers: result,
-        showWaiting: false
-      })
-    }
-    catch (error) {
-      console.error(error)
-      setState({
-        ...state,
-        showWaiting: false
-      })
-    }
-  }
-
-  return (
+  return(
     <>
-      <Waiting show={showWaiting} />
+      <Waiting />
+
+      <Notification />
+
+      <ConfirmDialog />
 
       <Typography variant="h1" gutterBottom>
         Listagem de clientes
       </Typography>
 
-      <Box sx={{
-        display: 'flex',
-        justifyContent: 'right',
-        mb: 2 //marginBottom
-      }}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'right',
+          mb: 2     // Margem inferior
+        }}
+      >
         <Link to="./new">
           <Button
             variant="contained"
-            size="large"
             color="secondary"
+            size="large"
             startIcon={<AddBoxIcon />}
           >
-            Novo CLiente
+            Novo cliente
           </Button>
         </Link>
-
       </Box>
 
       <Paper elevation={10}>
-      <Box sx={{ height: 400, width: '100%' }}>
-        <DataGrid
-          rows={customers}
-          columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 5,
+        <Box sx={{ height: 400, width: '100%' }}>
+          <DataGrid
+            rows={customers}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 5,
+                },
               },
-            },
-          }}
-          pageSizeOptions={[5]}
-        />
-      </Box>
-      </Paper>
+            }}
+            pageSizeOptions={[5]}
+          />
+        </Box>
+      </Paper>     
     </>
   )
 }
