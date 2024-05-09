@@ -72,8 +72,7 @@ export default function CustomerForm() {
     const customerCopy = { ...customer }
     // Atualiza o campo modificado em customerCopy
     customerCopy[e.target.name] = e.target.value
-    // Atualiza a variável de estado, substituindo o objeto customer
-    // pela cópia atualizada
+    // Atualiza a variável de estado, substituindo o objeto customer pela cópia atualizada
     setState({ ...state, customer: customerCopy, formModified: true })
   }
 
@@ -82,22 +81,18 @@ export default function CustomerForm() {
     // Exibir a tela de espera
     showWaiting(true)
     try {
-      // Invoca a validação dos dados de entrada da biblioteca Zod
-      // por meio do model Customer
+      // Invoca a validação dos dados de entrada da biblioteca Zod por meio do model Customer
       Customer.parse(customer)
 
-      // Envia os dados para o back-end para criar um novo cliente
-      // no banco de dados
+      // Envia os dados para o back-end para criar um novo cliente no banco de dados
       // Se houver parâmetro na rota, significa que estamos editando.
       // Portanto, precisamos enviar os dados ao back-end com o verbo PUT
       if(params.id) await myfetch.put(`/customers/${params.id}`, customer)
       
-      // Senão, os dados serão enviados com o método POST para a criação de
-      // um novo cliente
+      // Senão, os dados serão enviados com o método POST para a criação de um novo cliente
       else await myfetch.post('/customers', customer)
 
-      // Deu certo, vamos exibir a mensagem de feedback que, quando fechada,
-      // vai nos mandar de volta para a listagem de clientes
+      // Deu certo, vamos exibir a mensagem de feedback que, quando fechada, vai nos mandar de volta para a listagem de clientes
       notify('Item salvo com sucesso.', 'success', 4000, () => {
         navigate('..', { relative: 'path', replace: true })
       })
@@ -105,8 +100,7 @@ export default function CustomerForm() {
     catch(error) {
       console.error(error)
       if(error instanceof ZodError) {
-        // Formamos um objeto contendo os erros do Zod e
-        // os colocamos na variável de estado inputErrors
+        // Formamos um objeto contendo os erros do Zod e os colocamos na variável de estado inputErrors
         const errorMessages = {}
         for(let e of error.issues) errorMessages[e.path[0]] = e.message
         setState({ ...state, inputErrors: errorMessages })
@@ -216,7 +210,9 @@ export default function CustomerForm() {
               slotProps={{
                 textField: {
                   variant: 'filled',
-                  fullWidth: true
+                  fullWidth: true,
+                  error: inputErrors?.birth_date,
+                  helperText: inputErrors?.birth_date     
                 }
               }}
             />
@@ -230,7 +226,9 @@ export default function CustomerForm() {
             fullWidth
             placeholder="Ex.: Rua Principal"
             value={customer.street_name}
-            onChange={handleFieldChange}  
+            onChange={handleFieldChange} 
+            error={inputErrors?.street_name}
+            helperText={inputErrors?.street_name}     
           />
 
           <TextField 
@@ -240,7 +238,9 @@ export default function CustomerForm() {
             required
             fullWidth
             value={customer.house_number}
-            onChange={handleFieldChange}  
+            onChange={handleFieldChange} 
+            error={inputErrors?.house_number}
+            helperText={inputErrors?.house_number}      
           />
 
           <TextField 
@@ -250,7 +250,9 @@ export default function CustomerForm() {
             fullWidth
             placeholder="Apto., bloco, casa, etc."
             value={customer.additional_info}
-            onChange={handleFieldChange}  
+            onChange={handleFieldChange} 
+            error={inputErrors?.additional_info}
+            helperText={inputErrors?.additional_info}      
           />
 
           <TextField 
@@ -260,7 +262,9 @@ export default function CustomerForm() {
             required
             fullWidth
             value={customer.district}
-            onChange={handleFieldChange}  
+            onChange={handleFieldChange} 
+            error={inputErrors?.district}
+            helperText={inputErrors?.district}     
           />
 
           <TextField 
@@ -270,7 +274,9 @@ export default function CustomerForm() {
             required
             fullWidth
             value={customer.city}
-            onChange={handleFieldChange}  
+            onChange={handleFieldChange} 
+            error={inputErrors?.city}
+            helperText={inputErrors?.city}
           />
 
           <TextField 
@@ -280,8 +286,10 @@ export default function CustomerForm() {
             required
             fullWidth
             value={customer.uf}
-            onChange={handleFieldChange}
+            onChange={handleFieldChange}   
             select
+            error={inputErrors?.uf}
+            helperText={inputErrors?.uf}  
           >
             {
               states.map(s => 
@@ -306,7 +314,9 @@ export default function CustomerForm() {
                   label="Telefone/celular"
                   variant="filled"
                   required
-                  fullWidth                   
+                  fullWidth
+                  error={inputErrors?.phone}
+                  helperText={inputErrors?.phone}                        
                 />
             }
           </InputMask>
@@ -319,7 +329,9 @@ export default function CustomerForm() {
             required
             fullWidth
             value={customer.email}
-            onChange={handleFieldChange}  
+            onChange={handleFieldChange}
+            error={inputErrors?.email}
+            helperText={inputErrors?.email}       
           />
 
           <Box sx={{ display: 'flex', justifyContent: 'space-around', width: '100%' }}>
