@@ -53,6 +53,11 @@ export default function CarList() {
       }
     },
     {
+      field: 'plates',
+      headerName: 'Placas',
+      width: 160,
+    },
+    {
       field: 'selling_price',
       headerName: 'Preço de venda',
       width: 150,
