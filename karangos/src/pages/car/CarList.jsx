@@ -1,34 +1,33 @@
-import React from 'react'
-import Typography from '@mui/material/Typography'
-import Box from '@mui/material/Box'
-import { DataGrid } from '@mui/x-data-grid'
-import myfetch from '../../lib/myfetch'
-import IconButton from '@mui/material/IconButton'
-import { Link } from 'react-router-dom'
-import EditIcon from '@mui/icons-material/Edit'
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
-import Button from '@mui/material/Button'
-import Paper from '@mui/material/Paper'
-import AddBoxIcon from '@mui/icons-material/AddBox'
-//import Waiting from '../../ui/Waiting'
-import useConfirmDialog from '../../ui/useConfirmDialog'
-import useNotification from '../../ui/useNotification'
-import useWaiting from '../../ui/useWaiting'
+import React from 'react';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import { DataGrid } from '@mui/x-data-grid';
+import myfetch from '../../lib/myfetch';
+import IconButton from '@mui/material/IconButton';
+import { Link } from 'react-router-dom';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import Button from '@mui/material/Button';
+import Paper from '@mui/material/Paper';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+// import Waiting from '../../ui/Waiting';
+import useConfirmDialog from '../../ui/useConfirmDialog';
+import useNotification from '../../ui/useNotification';
+import useWaiting from '../../ui/useWaiting';
 
 export default function CarList() {
-
   const columns = [
-    { 
-      field: 'id', 
-      headerName: 'Cód.', 
+    {
+      field: 'id',
+      headerName: 'Cód.',
       width: 70,
-      type: "number"
+      type: 'number',
     },
     {
       field: 'model',
       headerName: 'Modelo/Marca',
       width: 200,
-      valueGetter: (value, row) => value + ' / ' + row.brand
+      valueGetter: (params) => `${params.row.model} / ${params.row.brand}`,
     },
     {
       field: 'color',
@@ -44,13 +43,7 @@ export default function CarList() {
       field: 'imported',
       headerName: 'Importado',
       width: 100,
-      renderCell: (params) => {
-        if (params.value == 1){
-            return 'sim'
-        } else{
-            return 'não'
-        }
-      }
+      renderCell: (params) => (params.value ? 'sim' : 'não'),
     },
     {
       field: 'plates',
@@ -58,11 +51,21 @@ export default function CarList() {
       width: 160,
     },
     {
+      field: 'selling_date',
+      headerName: 'Data da venda',
+      width: 150,
+      renderCell: (params) => {
+        if (!params.value) return '';
+        const date = new Date(params.value);
+        return date.toLocaleDateString('pt-BR');
+      },
+    },
+    {
       field: 'selling_price',
       headerName: 'Preço de venda',
       width: 150,
-      renderCell: (params) =>   new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(params.value)
-    },
+      renderCell: (params) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(params.value)
+      },
     {
       field: '_edit',
       headerName: 'Editar',
@@ -70,13 +73,13 @@ export default function CarList() {
       align: 'center',
       width: 90,
       sortable: false,
-      renderCell: params => (
+      renderCell: (params) => (
         <Link to={'./' + params.id}>
           <IconButton aria-label="Editar">
             <EditIcon />
           </IconButton>
         </Link>
-      )
+      ),
     },
     {
       field: '_delete',
@@ -85,95 +88,67 @@ export default function CarList() {
       align: 'center',
       width: 90,
       sortable: false,
-      renderCell: params => (
+      renderCell: (params) => (
         <IconButton aria-label="Excluir" onClick={() => handleDeleteButtonClick(params.id)}>
           <DeleteForeverIcon color="error" />
         </IconButton>
-      )
+      ),
     },
-  ]
+  ];
 
   const [state, setState] = React.useState({
-    cars: []
-  })
-  const {
-    cars
-  } = state
+    cars: [],
+  });
+  const { cars } = state;
 
-  const { askForConfirmation, ConfirmDialog } = useConfirmDialog()
-  const { notify, Notification } = useNotification()
-  const { showWaiting, Waiting } = useWaiting()
+  const { askForConfirmation, ConfirmDialog } = useConfirmDialog();
+  const { notify, Notification } = useNotification();
+  const { showWaiting, Waiting } = useWaiting();
 
-  /*
-    useEffect() com vetor de dependências vazio, para ser executado
-    uma única vez durante o carregamento inicial do componente e
-    disparar uma requisição ao back-end solicitando os dados a serem
-    exibidos
-  */
   React.useEffect(() => {
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
 
   async function fetchData() {
-    // Exibe a tela de espera
-    showWaiting()
+    showWaiting();
     try {
-      const result = await myfetch.get('/cars?by=brand')
-      
-      // Coloca o resultado no vetor customers
-      setState({ ...state, cars: result })
-    }
-    catch(error) {
-      console.error(error)
-      notify('ERRO: ' + error.message, 'error')
-    }
-    finally {
-      // Oculta a tela de espera
-      showWaiting(false)
+      const result = await myfetch.get('/cars?by=brand');
+      setState((prevState) => ({ ...prevState, cars: result }));
+    } catch (error) {
+      console.error(error);
+      notify('ERRO: ' + error.message, 'error');
+    } finally {
+      showWaiting(false);
     }
   }
 
   async function handleDeleteButtonClick(deleteId) {
-    if(await askForConfirmation('Deseja realmente excluir este item?', 'Confirmar operação')) {
-      showWaiting()   // Exibe a tela de espera
+    if (await askForConfirmation('Deseja realmente excluir este item?', 'Confirmar operação')) {
+      showWaiting();
       try {
-        // Efetua uma chamada ao back-end para tentar excluir o item
-        await myfetch.delete(`/cars/${deleteId}`)
-
-        // Recarrega os dados da grid
-        fetchData()
-
-        notify('Item excluído com sucesso.')
-      }
-      catch(error) {
-        console.error(error)
-        notify('ERRO: ' + error.message, 'error')
-      }
-      finally {
-        showWaiting(false)  // Ocultar a tela de espera
+        await myfetch.delete(`/cars/${deleteId}`);
+        fetchData();
+        notify('Item excluído com sucesso.');
+      } catch (error) {
+        console.error(error);
+        notify('ERRO: ' + error.message, 'error');
+      } finally {
+        showWaiting(false);
       }
     }
   }
 
-  return(
+  return (
     <>
       <Waiting />
-
       <Notification />
-
       <ConfirmDialog />
 
       <Typography variant="h1" gutterBottom>
         Listagem de carros
       </Typography>
 
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'right',
-          mb: 2     // Margem inferior
-        }}
-      >
+      <Box sx={{ display: 'flex', justifyContent: 'right', mb: 2 }}>
         <Link to="./new">
           <Button
             variant="contained"
@@ -201,7 +176,7 @@ export default function CarList() {
             pageSizeOptions={[5]}
           />
         </Box>
-      </Paper>     
+      </Paper>
     </>
-  )
+  );
 }
